@@ -11,7 +11,7 @@ exports.signup = async (req, res) => {
         if (!firstName || !lastName || !email || !password || !phoneNumber) {
             return res.status(400).json({ message: "Please provide all required fields" });
         }
-
+console.log(req.body);
         // Validate password format
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
         if (!passwordRegex.test(password)) {
@@ -42,7 +42,7 @@ exports.signup = async (req, res) => {
             phoneNumber,
             otp,
         });
-
+console.log(newUser);
         // Save new user to database
         await newUser.save();
 

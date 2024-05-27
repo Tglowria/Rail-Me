@@ -3,7 +3,7 @@ const User = require("../models/user.models");
 
 
 
-const emailSender = async ( User) => {
+const emailSender = async (newUser) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -14,10 +14,10 @@ const emailSender = async ( User) => {
 
   const mailOptions = {
     from: process.env.GOOGLE_USER,
-    to: User.email, 
+    to: newUser.email, 
     subject: "Welcome To Rail-Me Platform",
-    text: `Welcome ${User.firstName} to Rail-Me Platform!
-      This is your otp: ${User.otp}`,
+    text: `Welcome ${newUser.firstName} to Rail-Me Platform!
+      This is your otp: ${newUser.otp}`,
   };
 
   await transporter.sendMail(mailOptions);
