@@ -41,7 +41,6 @@ exports.signup = async (req, res) => {
             email,
             phoneNumber,
             otp,
-            otpCreatedAt: Date.now()
         });
 
         // Save new user to database
