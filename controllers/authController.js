@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
+const path = require("path");
 const User = require("../models/user.models.js");
 const { emailSender } = require('../middleware/email.js');  
 

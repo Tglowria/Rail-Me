@@ -24,4 +24,6 @@ const TrainSchema = new mongoose.Schema({
     _id: true
 });
 
-module.exports = mongoose.model('Train', TrainSchema);
+const Train = mongoose.model("Train", TrainSchema);
+
+module.exports = Train;
