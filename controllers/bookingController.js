@@ -27,7 +27,7 @@ exports.addBooking = async (req, res) => {
       const booking = await newBooking.save();
       return res
         .status(201)
-        .json({ booking, message: "Your Train Seat has been booked Successfully"});
+        .json({ message: "Your Train Seat has been booked Successfully", booking});
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Error Creating a booking", err });
