@@ -52,7 +52,7 @@ exports.addBooking = async (req, res) => {
             seatNo,
         }, { new: true });
 
-        return res.status(200).json({ booking: Booking, message: "Booking updated successfully" });
+        return res.status(200).json({ message: "Booking updated successfully", updatedBooking });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Error updating booking", error: err.message });
@@ -65,12 +65,8 @@ exports.deleteBooking = async (req, res) => {
 
         // Find and delete the booking
         const deletedBooking = await Booking.findByIdAndDelete(bookingId);
-
-        if (!deletedBooking) {
-            return res.status(404).json({ message: "Booking not found" });
-        }
-
-        return res.status(200).json({ message: "Booking deleted successfully" });
+        
+        return res.status(200).json({ message: "Booking deleted successfully", deletedBooking});
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Error deleting booking", error: err.message });
