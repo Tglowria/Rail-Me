@@ -1,4 +1,4 @@
-const cloudinary = reruire('../public/image/cloudinary.js')
+const cloudinary = require('../public/image/cloudinary.js');
 const User = require('../models/user.models');
 const Booking = require('../models/booking.models');
 const Train = require('../models/stations.models');
@@ -64,3 +64,5 @@ exports.uploadPicture = async (req, res) => {
       return res.status(500).json({ message: "Error Uploading Picture", error: err });
     }
   };
+
+ 

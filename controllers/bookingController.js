@@ -1,5 +1,7 @@
+const mongoose = require("mongoose")
 const User = require("../models/user.models");
 const Booking = require("../models/booking.models");
+const Train = require('../models/stations.models');
 
 exports.addBooking = async (req, res) => {
     try {
@@ -10,6 +12,10 @@ exports.addBooking = async (req, res) => {
           .status(400)
           .json({ message: "Please input all required fields!" });
       }
+      const user = await User.findById(id);
+      if (!user) {
+       return res.status(404).json({ message: "User not found" });
+      }
       const newBooking = new Booking({
         coach,
         from,
@@ -17,7 +23,7 @@ exports.addBooking = async (req, res) => {
         seatNo,
         userId: id,
       });
-      const user = await User.findById(id);
+      
       const booking = await newBooking.save();
       return res
         .status(201)
@@ -79,6 +85,16 @@ exports.getServices = async (req, res) => {
     try {
         const trains = await Train.find();
         res.status(200).json(trains);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+
+exports.getAllTrain = async (req, res) => {
+    try {
+        const train = await Train.find();
+        res.status(200).json(train);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');

@@ -1,8 +1,8 @@
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
-const path = require("path");
 const User = require("../models/user.models.js");
 const { emailSender } = require('../middleware/email.js');  
+
 
 exports.signup = async (req, res) => {
     try {
@@ -229,3 +229,4 @@ exports.verifyOtp = async (req, res) => {
       return res.status(500).json({ message: "Error Reseting Password", err });
     }
   };
+

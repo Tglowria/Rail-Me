@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const connectDB = require('./database/db'); 
-const userRouter = require('./routes/user.routes')
+const userRouter = require('./routes/user.routes');
+const bookingRouter = require('./routes/booking.routes');
+const adminRouter = require('./routes/admin.routes');
+
 
 const app = express();
 app.use(express.json());
@@ -17,6 +20,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/booking', bookingRouter)
+app.use('/api/v1/admin', adminRouter)
 
 app.listen(port, async () =>{
     try {
