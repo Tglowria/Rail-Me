@@ -52,7 +52,7 @@ exports.addBooking = async (req, res) => {
             seatNo,
         }, { new: true });
 
-        return res.status(200).json({ booking: updatedBooking, message: "Booking updated successfully" });
+        return res.status(200).json({ booking: Booking, message: "Booking updated successfully" });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Error updating booking", error: err.message });
