@@ -52,10 +52,6 @@ exports.addBooking = async (req, res) => {
             seatNo,
         }, { new: true });
 
-        if (!updatedBooking) {
-            return res.status(404).json({ message: "Booking not found" });
-        }
-
         return res.status(200).json({ booking: updatedBooking, message: "Booking updated successfully" });
     } catch (err) {
         console.error(err);
