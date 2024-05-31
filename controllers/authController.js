@@ -174,7 +174,7 @@ exports.verifyOtp = async (req, res) => {
   
       const token = uuidv4();
   
-      user.resetToken = token;
+      user.resetPasswordToken = token;
       await user.save();
   
       await emailResetPassword(email, token);
@@ -200,7 +200,7 @@ exports.resetPassword = async (req, res) => {
     }
 
     const user = await User.findOne({
-      resetToken: token
+      resetPasswordToken: token
     });
 
     if (!user) {
@@ -209,8 +209,7 @@ exports.resetPassword = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
-    user.resetToken = undefined;
-    user.resetTokenExpiry = undefined;
+
     await user.save();
 
     return res.status(200).json({ message: "Password reset successfully" });

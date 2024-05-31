@@ -80,6 +80,7 @@ exports.uploadPicture = async (req, res) => {
             }
 
             
+
             const result = await cloudinary.uploader.upload(req.file.path);
 
             
@@ -88,7 +89,7 @@ exports.uploadPicture = async (req, res) => {
                 { image: result.secure_url },
                 { new: true } 
             );
-
+            
             return res.status(200).json({
                 message: "Picture Saved Successfully",
                 data: updatedTrain,
