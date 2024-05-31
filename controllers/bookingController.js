@@ -42,14 +42,12 @@ exports.updateBooking = async (req, res) => {
     const bookingId = req.params.bookingId;
     const { coach, from, destination, seatNo } = req.body;
 
-    // Validate input
     if (!coach || !from || !destination || !seatNo) {
       return res
         .status(400)
         .json({ message: "Please provide all required fields!" });
     }
 
-    // Find and update the booking
     const updatedBooking = await Booking.findByIdAndUpdate(
       bookingId,
       {
@@ -80,7 +78,6 @@ exports.deleteBooking = async (req, res) => {
       return res.status(400).json({ message: "The Booking Does Not Exist" });
     }
 
-    // Find and delete the booking
     const deletedBooking = await Booking.findByIdAndDelete(bookingId);
 
     return res

@@ -12,11 +12,9 @@ exports.signup = async (req, res) => {
     try {
         const { firstName, lastName, password, email, phoneNumber } = req.body;
 
-        // Check if all required fields are provided
         if (!firstName || !lastName || !email || !password || !phoneNumber) {
             return res.status(400).json({ message: "Please provide all required fields" });
         }
-        // Validate password format
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
         if (!passwordRegex.test(password)) {
             return res.status(400).json({
@@ -24,7 +22,6 @@ exports.signup = async (req, res) => {
             });
         }
 
-        // Check if user with provided email already exists
         const existingUser = await User.findOne({ email });
         console.log(existingUser);
 
@@ -32,14 +29,11 @@ exports.signup = async (req, res) => {
             return res.status(409).json({ message: "User already exists" });
         }
 
-        // Generate OTP
         const otp = Math.floor(100000 + Math.random() * 900000);
 
-        // Hash password
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Create new user
         const newUser = new User({
             firstName,
             lastName,
@@ -49,12 +43,11 @@ exports.signup = async (req, res) => {
             otp,
         });
 console.log(newUser);
-        // Save new user to database
+  
         await newUser.save();
 
         const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        // Send OTP email
         await emailSender(newUser);
         await sendSms(newUser);
 
@@ -118,14 +111,12 @@ exports.verifyOtp = async (req, res) => {
           .json({ message: "User with that email not found" });
       }
   
-      // Generate new OTP
       const otp = Math.floor(100000 + Math.random() * 900000);
-      const otpCreationTime = Date.now(); // Store the creation time of OTP
+      const otpCreationTime = Date.now();
   
-      // Update user with new OTP and creation time
       user.otp = otp;
       user.otpCreatedAt = otpCreationTime;
-      user.isVerified = false; // Reset verification status
+      user.isVerified = false; 
   
       await user.save();
       
@@ -148,10 +139,8 @@ exports.verifyOtp = async (req, res) => {
           .json({ message: "Please input your email and password" });
       }
   
-      // Find The User By Email In The Database
       const user = await User.findOne({ email });
   
-      // If You're Not A User, Sign Up
       if (!user) {
         return res.status(404).json({ message: "User Not Found, Please Signup" });
       }
