@@ -212,17 +212,17 @@ exports.verifyOtp = async (req, res) => {
       }
 
   const hashPassword = await bcrypt.hash(newPassword, 10)
-  user.password = hashPassword;
+  User.password = hashPassword;
   
   await user.save();
 
         async (err, data) => {
-          await emailSenderTemplate(data, "Password Reset Succesfully!", user.email);
+          await emailSenderTemplate(data, "Password Reset Succesfully!", User.email);
         }
   
   return res
         .status(200)
-        .json({ message: "Password Reset successfully", user });
+        .json({ message: "Password Reset successfully", User });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Error Reseting Password", err });
