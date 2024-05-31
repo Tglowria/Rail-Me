@@ -68,33 +68,40 @@ console.log(newUser);
 
 
 exports.verifyOtp = async (req, res) => {
-    try {
-      const otp = req.query.otp;
-  
-      if (!otp) {
-        return res.status(400).json({ message: "Please Input Your Otp" });
-      }
-  
-      const user = await User.findOne({ otp: otp });
-  
-      if (!user) {
-        return res.status(400).json({ message: "User With That OTP Not Found" });
-      }
-  
-      if (user.otp !== otp) {
-        return res.status(400).json({ message: "Invalid Otp" });
-      }
-      user.isVerified = true;
-      user.otp = null;
-  
-      await user.save();
-  
-      return res.status(200).json({ message: "OTP Verified Successfully", user });
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Error Verifying Otp", err });
+  try {
+    const otp = req.body.otp;
+
+    if (!otp) {
+      return res.status(400).json({ message: "Please Input Your Otp" });
     }
-  };
+
+    const user = await User.findOne({ otp: otp });
+
+    if (!user) {
+      return res.status(400).json({ message: "User With That OTP Not Found" });
+    }
+
+    const otpCreationTime = user.otpCreatedAt;
+    const currentTime = Date.now();
+    const otpValidityPeriod = 10 * 60 * 1000;
+
+    if (currentTime - otpCreationTime > otpValidityPeriod) {
+      return res.status(400).json({ message: "OTP has expired" });
+    }
+
+    user.isVerified = true;
+    user.otp = null;
+
+    await user.save();
+
+    return res.status(200).json({ message: "OTP Verified Successfully", user });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({ message: "Error Verifying Otp" });
+  }
+};
+
 
   exports.resendOtp = async (req, res) => {
     try {
