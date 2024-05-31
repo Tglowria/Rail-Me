@@ -4,9 +4,9 @@ const isAuthenticated = require('../middleware/isAuthenticated');
 
 const router = express.Router();
 
-router.post('/create/:id', addBooking );
-router.put('/update/:id', updateBooking );
-router.delete('/delete/:id', deleteBooking );
-router.get('/alltrains', getAllTrain );
+router.post('/create/:id', isAuthenticated,addBooking );
+router.put('/update/:bookingId', isAuthenticated,updateBooking );
+router.delete('/delete/:bookingId', isAuthenticated,deleteBooking );
+router.get('/alltrains', isAuthenticated, getAllTrain );
 
 module.exports = router;

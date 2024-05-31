@@ -7,7 +7,7 @@ router.post('/signup', signup );
 router.post('/login', login );
 router.post('/verifyotp', verifyOtp );
 router.post('/resendotp', resendOtp );
-router.post('/resetpassword', resetPassword );
+router.post('/reset/:token', resetPassword );
 router.post('/forgotpassword', forgotPassword );
 
 

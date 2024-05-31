@@ -3,7 +3,7 @@ const User = require("../models/user.models");
 
 
 
-const emailSender = async (newUser) => {
+const emailResetPassword = async (email, token) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -14,16 +14,15 @@ const emailSender = async (newUser) => {
 
   const mailOptions = {
     from: process.env.GOOGLE_USER,
-    to: newUser.email, 
-    subject: "Welcome To Rail-Me Platform",
-    text: `Welcome ${newUser.firstName} to Rail-Me Platform!
-      This is your otp: ${newUser.otp}`,
+    to: email, 
+    subject: "Reset Password",
+    text: `Welcome, This is your reset token to reset your password. ${token}`,
   };
 
   await transporter.sendMail(mailOptions);
 };
 
-const emailSenderTemplate = async (msg, subject, receiver) => {
+const emailResetPasswordTemplate = async (msg, subject, receiver) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -49,14 +48,4 @@ const emailSenderTemplate = async (msg, subject, receiver) => {
   }
 };
 
-module.exports = { emailSender, emailSenderTemplate };
-
-exports.sendResetPasswordEmail = async (firstName, email) => {
-    const mailOptions = {
-        from: process.env.EMAIL_USER,
-        to: email,
-        subject: 'Reset Your Password',
-        text: `Hi ${firstName}, Your password has been reset successfully.`
-    };
-    await transporter.sendMail(mailOptions);
-};
+module.exports = { emailResetPassword, emailResetPasswordTemplate };

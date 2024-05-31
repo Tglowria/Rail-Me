@@ -15,8 +15,7 @@ const TrainSchema = new mongoose.Schema({
         enum: ['First Class', 'Business', 'Economy']
     },
     image: {
-        type: String,
-        required: true
+        type: String
     }
 },
 {
