@@ -211,14 +211,6 @@ exports.verifyOtp = async (req, res) => {
   
       }
 
-     
-  
-      const user = await User.findOne({resetToken: token});
-      if (!user) {
-        return res.status(404).json({ message: "User With This Token Can Not Be Found" });
-      }
-
-      res.send({ message: "alright"});
   const hashPassword = await bcrypt.hash(newPassword, 10)
   user.password = hashPassword;
   
