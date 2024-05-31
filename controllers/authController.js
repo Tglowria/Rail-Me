@@ -171,61 +171,62 @@ exports.verifyOtp = async (req, res) => {
     }
   };
   
-  exports.forgotPassword = async (req,res) => {
+  exports.forgotPassword = async (req, res) => {
     try {
-    const {email} = req.body;
-      if(!email) {
-        return res.status(400).json({ message: "Please Input Your Email" });
-  
+      const { email } = req.body;
+      if (!email) {
+        return res.status(400).json({ message: "Please input your email" });
       }
+  
       const user = await User.findOne({ email });
       if (!user) {
-        return res.status(404).json({ message: "User Not Found" });
+        return res.status(404).json({ message: "User not found" });
       }
   
       const token = uuidv4();
   
       user.resetToken = token;
-      user.save();
-     
+      await user.save();
+  
       await emailResetPassword(email, token);
-
-      return res
-        .status(200)
-        .json({ message: "Check Your Mail To Reset Your Password", user });
+  
+      return res.status(200).json({ message: "Check your email to reset your password" });
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Error saving user", err });
     }
-  }
-
-  exports.resetPassword = async (req, res) =>{
-    try {
-      const token = req.params.token;
-      const {newPassword, confirmPassword} = req.body
-      if(!token) {
-        return res.status(400).json({ message: "Please Input Your Reset Token" });
-      }
-      if(newPassword !== confirmPassword) {
-        return res.status(400).json({ message: "Password Does Not Match" });
-  
-      }
-
-  const hashPassword = await bcrypt.hash(newPassword, 10)
-  User.password = hashPassword;
-  
-  await user.save();
-
-        async (err, data) => {
-          await emailSenderTemplate(data, "Password Reset Succesfully!", User.email);
-        }
-  
-  return res
-        .status(200)
-        .json({ message: "Password Reset successfully", User });
-    } catch (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Error Reseting Password", err });
-    }
   };
+  
 
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword, confirmPassword } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ message: "Please input your reset token" });
+    }
+    if (newPassword !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords do not match" });
+    }
+
+    const user = await User.findOne({
+      resetToken: token
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid reset token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    user.resetToken = undefined;
+    user.resetTokenExpiry = undefined;
+    await user.save();
+
+    return res.status(200).json({ message: "Password reset successfully" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Error resetting password", err });
+  }
+};
