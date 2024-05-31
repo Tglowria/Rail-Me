@@ -88,11 +88,10 @@ exports.verifyOtp = async (req, res) => {
     if (currentTime - otpCreationTime > otpValidityPeriod) {
       return res.status(400).json({ message: "OTP has expired" });
     }
-
+    
     user.isVerified = true;
     user.otp = null;
-
-    await user.save();
+    
 
     return res.status(200).json({ message: "OTP Verified Successfully", user });
   } catch (err) {
