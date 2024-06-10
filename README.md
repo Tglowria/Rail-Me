@@ -41,7 +41,7 @@ Rail-Me is a train service provider that commutes people from the Abeokuta regio
 6. Multer (for handling file uploads)
 
 ## Postman Documentation
-[Postman Link]()
+[Postman Link](https://documenter.getpostman.com/view/32396301/2sA3Qv9BNS)
 
 I’m currently learning **back end web development** and a student at **At GRAZAC ACADEMY**
 
